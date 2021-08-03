@@ -1,0 +1,54 @@
+﻿<h1>Transaction List</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+
+            <th scope="col" sortable="reference" (sort)="onSort($event)">Reference</th>
+            <th scope="col" sortable="transactionType" (sort)="onSort($event)">Transaction Type</th>
+            <th scope="col" sortable="customerNumber" (sort)="onSort($event)">Customer Number</th>
+            <th scope="col" sortable="customerName" (sort)="onSort($event)">Customer Name</th>
+            <th scope="col" sortable="customerAddress" (sort)="onSort($event)">Customer address</th>
+            <th scope="col" sortable="customerPhoneNumber">Customer phone Number</th>
+            <th scope="col" sortable="amount" (sort)="onSort($event)">amount</th>
+            <th scope="col" sortable="beneficiaryBank" (sort)="onSort($event)">Beneficiary Bank</th>
+            <th scope="col" sortable="beneficiaryACNumber" (sort)="onSort($event)">Beneficiary Account Number</th>
+            <th scope="col" sortable="paymentDetails" (sort)="onSort($event)">Payment details</th>
+            <th scope="col" sortable="cardDetail" (sort)="onSort($event)">Card Details</th>
+            <th scope="col" sortable="region" (sort)="onSort($event)">Region</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let transaction of viewTransaction">
+            <td>{{transaction.reference}}</td>
+            <td>{{transaction.transactionType}}</td>
+            <td>{{transaction.customerNumber}}</td>
+            <td>{{transaction.customerName}}</td>
+            <td>{{transaction.customerAddress}}</td>
+            <td>{{transaction.customerPhoneNumber}}</td>
+            <td>{{transaction.amount}}{{transaction.currency}}</td>
+            <td>{{transaction.beneficiaryBank}}</td>
+            <td>{{transaction.beneficiaryACNumber}}</td>
+            <td>{{transaction.paymentDetails}}</td>
+            <td>{{transaction.cardDetail}}</td>
+            <td>{{transaction.region}}</td>
+
+
+        </tr>
+        <div class="d-flex justify-content-between p-2">
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshTxn()">
+            </ngb-pagination>
+
+            <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshTxn()">
+              <option [ngValue]="2">2 items per page</option>
+              <option [ngValue]="4">4 items per page</option>
+              <option [ngValue]="6">6 items per page</option>
+            </select>
+        </div>
+        <tr *ngIf="!transactions">
+            <td colspan="4" class="text-center">
+                <span class="spinner-border spinner-border-lg align-center"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>
