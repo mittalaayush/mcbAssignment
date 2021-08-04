@@ -21,9 +21,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function handleRoute() {
             switch (true) {
-                case url.endsWith('/users/authenticate') && method === 'POST':
-                    return authenticate();
-                case url.endsWith('/users/register') && method === 'POST':
+                case url.endsWith('/user/login') && method === 'POST':
+                    return login();
+                case url.endsWith('/user/register') && method === 'POST':
                     return register();
                 case url.endsWith('/transaction/create') && method === 'POST':
                     return createTransaction();
@@ -45,18 +45,19 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         // route functions
 
-        function authenticate() {
+        function login() {
             const { username, password } = body;
-            const user = users.find(x => x.username === username && x.password === password);
-            if (!user) return error('Username or password is incorrect');
-            return ok({
-                id: user.id,
-                username: user.username,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                userType:user.userType,
-                token: 'fake-jwt-token'
-            })
+            // const user = users.find(x => x.username === username && x.password === password);
+            // if (!user) return error('Username or password is incorrect');
+            return next.handle(request);
+            // return ok({
+            //     id: user.id,
+            //     username: user.username,
+            //     firstName: user.firstName,
+            //     lastName: user.lastName,
+            //     userType:user.userType,
+            //     token: 'fake-jwt-token'
+            // })
         }
 
         function register() {
@@ -66,10 +67,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 return error('Username "' + user.username + '" is already taken')
             }
 
-            user.id = users.length ? Math.max(...users.map(x => x.id)) + 1 : 1;
+            // user.id = users.length ? Math.max(...users.map(x => x.id)) + 1 : 1;
             users.push(user);
             localStorage.setItem('users', JSON.stringify(users));
-            return ok();
+            return next.handle(request);
+            // return ok();
         }
         
         function createTransaction() {

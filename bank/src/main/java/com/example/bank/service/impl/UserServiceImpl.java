@@ -1,5 +1,7 @@
 package com.example.bank.service.impl;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.BeanUtils;
@@ -23,16 +25,20 @@ public class UserServiceImpl implements UserService{
 	 
 	 public void increaseFailedAttempts(User user) {
 	        int newFailAttempts = user.getFailedAttempt() + 1;
-	        repo.updateFailedAttempts(newFailAttempts, user.getEmail());
+	        repo.updateFailedAttempts(newFailAttempts, user.getUsername());
 	    }
 
 	@Override
 	public UserDto login(LoginCredentials userCred) {
 		UserDto userDto = new UserDto();
-		User u = repo.findByUsername(userCred.username);
-		if(u!=null) {
+		List<User> userResult = repo.findByUsername(userCred.username);
+		if(userResult == null || userResult.size() == 0) {
 			userDto.userResponseMessage = "No Such User Found";		
+			return userDto;
 		}
+		
+		User u = userResult.get(0);
+		
 		
 		String password = u.getPassword();
 		
@@ -43,11 +49,11 @@ public class UserServiceImpl implements UserService{
 		} else {
 			if(u.getFailedAttempt()<MAX_FAILED_ATTEMPTS-1) {
 				userDto.userResponseMessage = "Incorrect Credentials";
+				increaseFailedAttempts(u);
 			} else {
 				userDto.userResponseMessage = "Incorrect Credentials : Account Locked";
 			}
-			
-			increaseFailedAttempts(u);
+		
 			return userDto;	
 		}
 			

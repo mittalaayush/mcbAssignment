@@ -42,7 +42,11 @@ export class AccountService {
                     this.userSubject.next(user);
                 return user;
                 } else {
-                    return this.error(user.userResponseMessage);
+                    localStorage.removeItem('user');
+                    this.userSubject.next(null);
+                    this.error(user.userResponseMessage);
+                    user = {userResponseMessage : user.userResponseMessage};
+                    return user;
                 }
             }));
 

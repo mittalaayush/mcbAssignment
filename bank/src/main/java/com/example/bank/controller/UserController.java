@@ -18,18 +18,14 @@ public class UserController {
 	@Autowired
     private UserService userService;
 
-	@CrossOrigin
 	@PostMapping("/login")
     public UserDto addStudent(@RequestBody LoginCredentials userCred) {
 		return userService.login(userCred);
 	}
 	
-	@CrossOrigin
 	@PostMapping("/register")
     public UserDto addStudent(@RequestBody UserDto userData) {
 		return userService.register(userData);
 	}
-	
-	
-	
+
 }

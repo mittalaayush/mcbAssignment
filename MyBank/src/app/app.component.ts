@@ -11,15 +11,6 @@ export class AppComponent {
   user: User;
 
   ngOnInit(){
-  this.user = {
-          id: '1',
-          username: 'aayush',
-          password: 'ds',
-          firstName: 'Aayush',
-          lastName: 'Mittal',
-          token: "dsdd",
-          userType: "Yes"
-      }
   }
 
   constructor(private accountService: AccountService) {

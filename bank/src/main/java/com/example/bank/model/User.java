@@ -3,14 +3,11 @@ package com.example.bank.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column()
-	private String email;
 
 	@Column()
 	private String password;
@@ -21,7 +18,7 @@ public class User {
 	@Column()
 	private String lastName;
 
-	@Column()
+	@Column(unique=true)
 	private String username;
 	
 	@Column()
@@ -37,11 +34,10 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(Integer id, String email, String password, String firstName, String lastName, String username,
+	public User(Integer id, String password, String firstName, String lastName, String username,
 			String token, String userType, int failedAttempt) {
 		super();
 		this.id = id;
-		this.email = email;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -58,15 +54,6 @@ public class User {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getPassword() {
 		return password;
 	}
